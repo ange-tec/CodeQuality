@@ -24,50 +24,44 @@ public class YahtzeeGame
 
     public static int Chance(int d1, int d2, int d3, int d4, int d5)
     {
-        var total = 0;
-        total += d1;
-        total += d2;
-        total += d3;
-        total += d4;
-        total += d5;
-        return total;
+        return d1 + d2 + d3 + d4 + d5;
     }
 
     public int Fives()
     {
-        var s = 0;
-        int i;
-        for (i = 0; i < dice.Length; i++)
-            if (dice[i] == 5)
-                s = s + 5;
-        return s;
+        int diceValue = 5;
+        return this.dice.Where(d => d == diceValue ).Sum();
     }
-
+    
     public static int FourOfAKind(int _1, int _2, int d3, int d4, int d5)
     {
-        int[] tallies;
-        tallies = new int[6];
+        int[] tallies = new int[6];
         tallies[_1 - 1]++;
         tallies[_2 - 1]++;
         tallies[d3 - 1]++;
         tallies[d4 - 1]++;
         tallies[d5 - 1]++;
-        for (var i = 0; i < 6; i++)
+        return CountSameDice(tallies, 4);
+    }
+
+    public static int CountSameDice(int[] tallies, int target)
+    {
+        for (var i = 0; i < tallies.Length; i++)
             if (tallies[i] >= 4)
                 return (i + 1) * 4;
         return 0;
     }
-
     public int Fours()
     {
-        int sum;
-        sum = 0;
-        for (var at = 0; at != 5; at++)
-            if (dice[at] == 4)
-                sum += 4;
-        return sum;
+        int diceValue = 4;
+            
+        return this.AddSomeDice(4);
     }
 
+    public int AddSomeDice(int diceValue)
+    {
+        return this.dice.Where(d => d == diceValue).Sum();
+    }
     public static int FullHouse(int d1, int d2, int d3, int d4, int d5)
     {
         int[] tallies;
@@ -122,17 +116,10 @@ public class YahtzeeGame
         return 0;
     }
 
-    public static int Ones(int d1, int d2, int d3, int d4, int d5)
+    public int Ones()
     {
-        var sum = 0;
-        if (d1 == 1) sum++;
-        if (d2 == 1) sum++;
-        if (d3 == 1) sum++;
-        if (d4 == 1) sum++;
-        if (d5 == 1)
-            sum++;
-
-        return sum;
+        int diceValue = 1;
+        return this.dice.Where(d => d == diceValue).Sum();
     }
 
     public int ScorePair(int d1, int d2, int d3, int d4, int d5)
@@ -152,11 +139,8 @@ public class YahtzeeGame
 
     public int sixes()
     {
-        var sum = 0;
-        for (var at = 0; at < dice.Length; at++)
-            if (dice[at] == 6)
-                sum = sum + 6;
-        return sum;
+        int diceValue = 6;
+        return this.dice.Where(d => d == diceValue ).Sum();
     }
 
     public static int SmallStraight(int d1, int d2, int d3, int d4, int d5)
@@ -186,22 +170,13 @@ public class YahtzeeGame
         t[d3 - 1]++;
         t[d4 - 1]++;
         t[d5 - 1]++;
-        for (var i = 0; i < 6; i++)
-            if (t[i] >= 3)
-                return (i + 1) * 3;
-        return 0;
+        return CountSameDice(tallies: [], 3);
     }
 
-    public static int Threes(int d1, int d2, int d3, int d4, int d5)
+    public int Threes()
     {
-        int s;
-        s = 0;
-        if (d1 == 3) s += 3;
-        if (d2 == 3) s += 3;
-        if (d3 == 3) s += 3;
-        if (d4 == 3) s += 3;
-        if (d5 == 3) s += 3;
-        return s;
+        int diceValue  = 3;
+        return this.dice.Where(d => d == diceValue).Sum();
     }
 
     public static int TwoPair(int d1, int d2, int d3, int d4, int d5)
@@ -226,15 +201,10 @@ public class YahtzeeGame
         return 0;
     }
 
-    public static int Twos(int d1, int d2, int d3, int d4, int d5)
+    public int Twos()
     {
-        var sum = 0;
-        if (d1 == 2) sum += 2;
-        if (d2 == 2) sum += 2;
-        if (d3 == 2) sum += 2;
-        if (d4 == 2) sum += 2;
-        if (d5 == 2) sum += 2;
-        return sum;
+        int diceValue = 2;
+        return this.dice.Where(d => d == diceValue).Sum();
     }
 
     public static int Yahtzee(params int[] dice)
