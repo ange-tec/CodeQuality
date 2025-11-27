@@ -2,22 +2,15 @@ namespace CodeQuality.Samples.Legacy.GildedRose;
 
 /// <summary>
 /// </summary>
-public class GildedRose
+public class GildedRose(IList<Item> items)
 {
-    private readonly IList<Item> Items;
-
-    public GildedRose(IList<Item> Items)
-    {
-        this.Items = Items;
-    }
-
     public void UpdateQuality()
     {
-        foreach (var item in this.Items)
+        foreach (var item in items)
         {
             if (this.IsAgedBrie(item))
             {
-                UpdateAgedBrieQuality(item);
+                this.UpdateAgedBrieQuality(item);
                 continue;
             }
 
@@ -38,29 +31,23 @@ public class GildedRose
 
     private void CheckItemSellInLowerThanElevenToBackStageConcert(Item item)
     {
-        if (item.SellIn < 11)
+        if (item.SellIn < 11 && this.IfQualityLowerThanFifty(item))
         {
-            if (IfQualityLowerThanFifty(item))
-            {
-                IncreaseItemQualityWithOne(item);
-            }
+            this.IncreaseItemQualityWithOne(item);
         }
     }
 
     private void CheckItemSellInLowerThanSixForBackStageConcert(Item item)
     {
-        if (item.SellIn < 6)
+        if (item.SellIn < 6 && this.IfQualityLowerThanFifty(item))
         {
-            if (IfQualityLowerThanFifty(item))
-            {
-                IncreaseItemQualityWithOne(item);
-            }
+            this.IncreaseItemQualityWithOne(item);
         }
     }
 
     private void DecreaseItemQualityWithOne(Item item)
     {
-        item.Quality = item.Quality - 1;
+        item.Quality -= 1;
     }
 
     private bool IfQualityHigherThanZero(Item item)
@@ -75,7 +62,7 @@ public class GildedRose
 
     private void IncreaseItemQualityWithOne(Item item)
     {
-        item.Quality = item.Quality + 1;
+        item.Quality += 1;
     }
 
     private bool IsAgedBrie(Item item)
@@ -95,18 +82,15 @@ public class GildedRose
 
     private void UpdateAgedBrieQuality(Item item)
     {
-        if (IfQualityLowerThanFifty(item))
+        if (this.IfQualityLowerThanFifty(item))
         {
-            IncreaseItemQualityWithOne(item);
+            this.IncreaseItemQualityWithOne(item);
         }
 
-        item.SellIn = item.SellIn - 1;
-        if (item.SellIn < 0)
+        item.SellIn -= 1;
+        if (item.SellIn < 0 && this.IfQualityLowerThanFifty(item))
         {
-            if (IfQualityLowerThanFifty(item))
-            {
-                IncreaseItemQualityWithOne(item);
-            }
+            this.IncreaseItemQualityWithOne(item);
         }
     }
 
@@ -119,10 +103,10 @@ public class GildedRose
             this.CheckItemSellInLowerThanSixForBackStageConcert(item);
         }
 
-        item.SellIn = item.SellIn - 1;
+        item.SellIn -= 1;
         if (item.SellIn < 0)
         {
-            item.Quality = item.Quality - item.Quality;
+            item.Quality -= item.Quality;
         }
     }
 
@@ -133,13 +117,10 @@ public class GildedRose
             this.DecreaseItemQualityWithOne(item);
         }
 
-        item.SellIn = item.SellIn - 1;
-        if (item.SellIn < 0)
+        item.SellIn -= 1;
+        if (item.SellIn < 0 && this.IfQualityHigherThanZero(item))
         {
-            if (this.IfQualityHigherThanZero(item))
-            {
-                this.DecreaseItemQualityWithOne(item);
-            }
+            this.DecreaseItemQualityWithOne(item);
         }
     }
 }
