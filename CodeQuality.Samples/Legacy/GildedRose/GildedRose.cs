@@ -16,7 +16,7 @@ public class GildedRose
     {
         for (var i = 0; i < Items.Count; i++)
         {
-            if (IsItemNameAgedBrie(i) && IsItemBackStagePassesToATafkal80EtcConcert(i))
+            if (IsItemNameAgedBrie(i) && IsItemDoesnotEqualToBackStagePassesToATafkal80EtcConcert(i))
             {
                 if (Items[i].Quality > 0)
                 {
@@ -53,7 +53,7 @@ public class GildedRose
                 }
             }
 
-            if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
+            if (IsItemNameSulfurasHandOfRangnaros(i))
             {
                 Items[i].SellIn = Items[i].SellIn - 1;
             }
@@ -62,7 +62,7 @@ public class GildedRose
             {
                 if (IsItemNameAgedBrie(i))
                 {
-                    if (IsItemBackStagePassesToATafkal80EtcConcert(i))
+                    if (IsItemDoesnotEqualToBackStagePassesToATafkal80EtcConcert(i))
                     {
                         if (Items[i].Quality > 0)
                         {
@@ -93,7 +93,7 @@ public class GildedRose
         return Items[i].Name != "Sulfuras, Hand of Ragnaros";
     }
 
-    private bool IsItemBackStagePassesToATafkal80EtcConcert(int i)
+    private bool IsItemDoesnotEqualToBackStagePassesToATafkal80EtcConcert(int i)
     {
         return Items[i].Name != "Backstage passes to a TAFKAL80ETC concert";
     }
