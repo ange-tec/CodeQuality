@@ -16,6 +16,12 @@ public class GildedRose
     {
         for (var i = 0; i < Items.Count; i++)
         {
+            if (IsItemNameEqualToAgedBrie(i))
+            {
+                UpdateAgedBrieQuality(i);
+                continue;
+            }
+            
             if (IsItemNameDoesnotEqualToAgedBrie(i) && IsItemDoesnotEqualToBackStagePassesToATafkal80EtcConcert(i))
             {
                 if (IfQualityHigherThanZero(i))
@@ -40,6 +46,7 @@ public class GildedRose
                     }
                 }
             }
+            
 
             if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
             {
@@ -74,6 +81,25 @@ public class GildedRose
                 }
             }
         }
+    }
+
+    private void UpdateAgedBrieQuality(int i)
+    {
+        if (IfQualityLowerThanFifty(i))
+        {
+            IncreaseItemQualityWithOne(i);
+        }
+            
+        Items[i].SellIn = Items[i].SellIn - 1;
+            
+        if (Items[i].SellIn < 0)
+        {
+            if (IfQualityLowerThanFifty(i))
+            {
+                IncreaseItemQualityWithOne(i);
+            }
+        }
+        return;
     }
 
     private void CheckItemSellInLowerThanSixForBackStageConcert(int i)
@@ -136,5 +162,9 @@ public class GildedRose
     private bool IsItemNameDoesnotEqualToAgedBrie(int i)
     {
         return Items[i].Name != "Aged Brie";
+    }
+    private bool IsItemNameEqualToAgedBrie(int i)
+    {
+        return Items[i].Name == "Aged Brie";
     }
 }
