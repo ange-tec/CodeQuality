@@ -20,9 +20,9 @@ public class GildedRose
             {
                 if (IfQualityHigherThanZero(i))
                 {
-                    if (IsItemNameSulfurasHandOfRangnaros(i))
+                    if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
                     {
-                        Items[i].Quality = Items[i].Quality - 1;
+                        DecreaseItemQualityWithOne(i);
                     }
                 }
             }
@@ -30,30 +30,18 @@ public class GildedRose
             {
                 if (IfQualityLowerThanFifty(i))
                 {
-                    Items[i].Quality = Items[i].Quality + 1;
+                    IncreaseItemQualityWithOne(i);
 
                     if (IsItemNameEqualsToBackstagePassesToATafkal80EtcConcert(i))
                     {
-                        if (Items[i].SellIn < 11)
-                        {
-                            if (IfQualityLowerThanFifty(i))
-                            {
-                                Items[i].Quality = Items[i].Quality + 1;
-                            }
-                        }
+                        CheckItemSellInLowerThanElevenToBackStageConcert(i);
 
-                        if (Items[i].SellIn < 6)
-                        {
-                            if (IfQualityLowerThanFifty(i))
-                            {
-                                Items[i].Quality = Items[i].Quality + 1;
-                            }
-                        }
+                        CheckItemSellInLowerThanSixForBackStageConcert(i);
                     }
                 }
             }
 
-            if (IsItemNameSulfurasHandOfRangnaros(i))
+            if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
             {
                 Items[i].SellIn = Items[i].SellIn - 1;
             }
@@ -66,9 +54,9 @@ public class GildedRose
                     {
                         if (IfQualityHigherThanZero(i))
                         {
-                            if (IsItemNameSulfurasHandOfRangnaros(i))
+                            if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
                             {
-                                Items[i].Quality = Items[i].Quality - 1;
+                                DecreaseItemQualityWithOne(i);
                             }
                         }
                     }
@@ -79,13 +67,45 @@ public class GildedRose
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (IfQualityLowerThanFifty(i))
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        IncreaseItemQualityWithOne(i);
                     }
                 }
             }
         }
+    }
+
+    private void CheckItemSellInLowerThanSixForBackStageConcert(int i)
+    {
+        if (Items[i].SellIn < 6)
+        {
+            if (IfQualityLowerThanFifty(i))
+            {
+                IncreaseItemQualityWithOne(i);
+            }
+        }
+    }
+
+    private void CheckItemSellInLowerThanElevenToBackStageConcert(int i)
+    {
+        if (Items[i].SellIn < 11)
+        {
+            if (IfQualityLowerThanFifty(i))
+            {
+                IncreaseItemQualityWithOne(i);
+            }
+        }
+    }
+
+    private void DecreaseItemQualityWithOne(int i)
+    {
+        Items[i].Quality = Items[i].Quality - 1;
+    }
+
+    private void IncreaseItemQualityWithOne(int i)
+    {
+        Items[i].Quality = Items[i].Quality + 1;
     }
 
     private bool IfQualityLowerThanFifty(int i)
@@ -103,7 +123,7 @@ public class GildedRose
         return Items[i].Name == "Backstage passes to a TAFKAL80ETC concert";
     }
 
-    private bool IsItemNameSulfurasHandOfRangnaros(int i)
+    private bool IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(int i)
     {
         return Items[i].Name != "Sulfuras, Hand of Ragnaros";
     }
