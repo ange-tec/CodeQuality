@@ -13,132 +13,132 @@ public class GildedRose
 
     public void UpdateQuality()
     {
-        for (var i = 0; i < Items.Count; i++)
+        foreach (var item in this.Items)
         {
-            if (this.IsAgedBrie(i))
+            if (this.IsAgedBrie(item))
             {
-                UpdateAgedBrieQuality(i);
+                UpdateAgedBrieQuality(item);
                 continue;
             }
 
-            if (this.IsBackstagePass(i))
+            if (this.IsBackstagePass(item))
             {
-                this.UpdateQualityForBackstagePass(i);
+                this.UpdateQualityForBackstagePass(item);
                 continue;
             }
 
-            if (this.IsSulfura(i))
+            if (this.IsSulfura(item))
             {
                 continue;
             }
 
-            this.UpdateQualityForRegularItem(i);
+            this.UpdateQualityForRegularItem(item);
         }
     }
 
-    private void CheckItemSellInLowerThanElevenToBackStageConcert(int i)
+    private void CheckItemSellInLowerThanElevenToBackStageConcert(Item item)
     {
-        if (Items[i].SellIn < 11)
+        if (item.SellIn < 11)
         {
-            if (IfQualityLowerThanFifty(i))
+            if (IfQualityLowerThanFifty(item))
             {
-                IncreaseItemQualityWithOne(i);
+                IncreaseItemQualityWithOne(item);
             }
         }
     }
 
-    private void CheckItemSellInLowerThanSixForBackStageConcert(int i)
+    private void CheckItemSellInLowerThanSixForBackStageConcert(Item item)
     {
-        if (Items[i].SellIn < 6)
+        if (item.SellIn < 6)
         {
-            if (IfQualityLowerThanFifty(i))
+            if (IfQualityLowerThanFifty(item))
             {
-                IncreaseItemQualityWithOne(i);
+                IncreaseItemQualityWithOne(item);
             }
         }
     }
 
-    private void DecreaseItemQualityWithOne(int i)
+    private void DecreaseItemQualityWithOne(Item item)
     {
-        Items[i].Quality = Items[i].Quality - 1;
+        item.Quality = item.Quality - 1;
     }
 
-    private bool IfQualityHigherThanZero(int i)
+    private bool IfQualityHigherThanZero(Item item)
     {
-        return Items[i].Quality > 0;
+        return item.Quality > 0;
     }
 
-    private bool IfQualityLowerThanFifty(int i)
+    private bool IfQualityLowerThanFifty(Item item)
     {
-        return Items[i].Quality < 50;
+        return item.Quality < 50;
     }
 
-    private void IncreaseItemQualityWithOne(int i)
+    private void IncreaseItemQualityWithOne(Item item)
     {
-        Items[i].Quality = Items[i].Quality + 1;
+        item.Quality = item.Quality + 1;
     }
 
-    private bool IsAgedBrie(int i)
+    private bool IsAgedBrie(Item item)
     {
-        return Items[i].Name == "Aged Brie";
+        return item.Name == "Aged Brie";
     }
 
-    private bool IsBackstagePass(int i)
+    private bool IsBackstagePass(Item item)
     {
-        return Items[i].Name == "Backstage passes to a TAFKAL80ETC concert";
+        return item.Name == "Backstage passes to a TAFKAL80ETC concert";
     }
 
-    private bool IsSulfura(int i)
+    private bool IsSulfura(Item item)
     {
-        return Items[i].Name == "Sulfuras, Hand of Ragnaros";
+        return item.Name == "Sulfuras, Hand of Ragnaros";
     }
 
-    private void UpdateAgedBrieQuality(int i)
+    private void UpdateAgedBrieQuality(Item item)
     {
-        if (IfQualityLowerThanFifty(i))
+        if (IfQualityLowerThanFifty(item))
         {
-            IncreaseItemQualityWithOne(i);
+            IncreaseItemQualityWithOne(item);
         }
 
-        Items[i].SellIn = Items[i].SellIn - 1;
-        if (Items[i].SellIn < 0)
+        item.SellIn = item.SellIn - 1;
+        if (item.SellIn < 0)
         {
-            if (IfQualityLowerThanFifty(i))
+            if (IfQualityLowerThanFifty(item))
             {
-                IncreaseItemQualityWithOne(i);
+                IncreaseItemQualityWithOne(item);
             }
         }
     }
 
-    private void UpdateQualityForBackstagePass(int i)
+    private void UpdateQualityForBackstagePass(Item item)
     {
-        if (this.IfQualityLowerThanFifty(i))
+        if (this.IfQualityLowerThanFifty(item))
         {
-            this.IncreaseItemQualityWithOne(i);
-            this.CheckItemSellInLowerThanElevenToBackStageConcert(i);
-            this.CheckItemSellInLowerThanSixForBackStageConcert(i);
+            this.IncreaseItemQualityWithOne(item);
+            this.CheckItemSellInLowerThanElevenToBackStageConcert(item);
+            this.CheckItemSellInLowerThanSixForBackStageConcert(item);
         }
 
-        this.Items[i].SellIn = this.Items[i].SellIn - 1;
-        if (this.Items[i].SellIn < 0)
+        item.SellIn = item.SellIn - 1;
+        if (item.SellIn < 0)
         {
-            this.Items[i].Quality = this.Items[i].Quality - this.Items[i].Quality;
+            item.Quality = item.Quality - item.Quality;
         }
     }
 
-    private void UpdateQualityForRegularItem(int i)
+    private void UpdateQualityForRegularItem(Item item)
     {
-        if (this.IfQualityHigherThanZero(i))
+        if (this.IfQualityHigherThanZero(item))
         {
-            this.DecreaseItemQualityWithOne(i);
+            this.DecreaseItemQualityWithOne(item);
         }
 
-        this.Items[i].SellIn = this.Items[i].SellIn - 1;
-        if (this.Items[i].SellIn < 0)
+        item.SellIn = item.SellIn - 1;
+        if (item.SellIn < 0)
         {
-            if (this.IfQualityHigherThanZero(i))
+            if (this.IfQualityHigherThanZero(item))
             {
-                this.DecreaseItemQualityWithOne(i);
+                this.DecreaseItemQualityWithOne(item);
             }
         }
     }
