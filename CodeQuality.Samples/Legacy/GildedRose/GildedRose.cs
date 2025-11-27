@@ -27,29 +27,12 @@ public class GildedRose
                 continue;
             }
 
-            if (IfQualityHigherThanZero(i))
+            if (this.IsSulfura(i))
             {
-                if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
-                {
-                    DecreaseItemQualityWithOne(i);
-                }
+                continue;
             }
 
-            if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
-            {
-                Items[i].SellIn = Items[i].SellIn - 1;
-            }
-
-            if (Items[i].SellIn < 0)
-            {
-                if (IfQualityHigherThanZero(i))
-                {
-                    if (IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(i))
-                    {
-                        DecreaseItemQualityWithOne(i);
-                    }
-                }
-            }
+            this.UpdateQualityForRegularItem(i);
         }
     }
 
@@ -105,9 +88,9 @@ public class GildedRose
         return Items[i].Name == "Backstage passes to a TAFKAL80ETC concert";
     }
 
-    private bool IsItemNameDoesnotEqualToSulfurasHandOfRangnaros(int i)
+    private bool IsSulfura(int i)
     {
-        return Items[i].Name != "Sulfuras, Hand of Ragnaros";
+        return Items[i].Name == "Sulfuras, Hand of Ragnaros";
     }
 
     private void UpdateAgedBrieQuality(int i)
@@ -140,6 +123,23 @@ public class GildedRose
         if (this.Items[i].SellIn < 0)
         {
             this.Items[i].Quality = this.Items[i].Quality - this.Items[i].Quality;
+        }
+    }
+
+    private void UpdateQualityForRegularItem(int i)
+    {
+        if (this.IfQualityHigherThanZero(i))
+        {
+            this.DecreaseItemQualityWithOne(i);
+        }
+
+        this.Items[i].SellIn = this.Items[i].SellIn - 1;
+        if (this.Items[i].SellIn < 0)
+        {
+            if (this.IfQualityHigherThanZero(i))
+            {
+                this.DecreaseItemQualityWithOne(i);
+            }
         }
     }
 }
