@@ -8,40 +8,24 @@ public class GildedRose(IList<Item> items)
     {
         foreach (var item in items)
         {
-            if (this.IsAgedBrie(item))
+            if (item.IsAgedBrie())
             {
-                this.UpdateAgedBrieQuality(item);
+                item.UpdateAgedBrieQuality();
                 continue;
             }
 
-            if (this.IsBackstagePass(item))
+            if (item.IsBackstagePass())
             {
-                this.UpdateQualityForBackstagePass(item);
+                item.UpdateQualityForBackstagePass();
                 continue;
             }
 
-            if (this.IsSulfura(item))
+            if (item.IsSulfura())
             {
                 continue;
             }
 
             this.UpdateQualityForRegularItem(item);
-        }
-    }
-
-    private void CheckItemSellInLowerThanElevenToBackStageConcert(Item item)
-    {
-        if (item.SellIn < 11 && this.IfQualityLowerThanFifty(item))
-        {
-            this.IncreaseItemQualityWithOne(item);
-        }
-    }
-
-    private void CheckItemSellInLowerThanSixForBackStageConcert(Item item)
-    {
-        if (item.SellIn < 6 && this.IfQualityLowerThanFifty(item))
-        {
-            this.IncreaseItemQualityWithOne(item);
         }
     }
 
@@ -53,61 +37,6 @@ public class GildedRose(IList<Item> items)
     private bool IfQualityHigherThanZero(Item item)
     {
         return item.Quality > 0;
-    }
-
-    private bool IfQualityLowerThanFifty(Item item)
-    {
-        return item.Quality < 50;
-    }
-
-    private void IncreaseItemQualityWithOne(Item item)
-    {
-        item.Quality += 1;
-    }
-
-    private bool IsAgedBrie(Item item)
-    {
-        return item.Name == "Aged Brie";
-    }
-
-    private bool IsBackstagePass(Item item)
-    {
-        return item.Name == "Backstage passes to a TAFKAL80ETC concert";
-    }
-
-    private bool IsSulfura(Item item)
-    {
-        return item.Name == "Sulfuras, Hand of Ragnaros";
-    }
-
-    private void UpdateAgedBrieQuality(Item item)
-    {
-        if (this.IfQualityLowerThanFifty(item))
-        {
-            this.IncreaseItemQualityWithOne(item);
-        }
-
-        item.SellIn -= 1;
-        if (item.SellIn < 0 && this.IfQualityLowerThanFifty(item))
-        {
-            this.IncreaseItemQualityWithOne(item);
-        }
-    }
-
-    private void UpdateQualityForBackstagePass(Item item)
-    {
-        if (this.IfQualityLowerThanFifty(item))
-        {
-            this.IncreaseItemQualityWithOne(item);
-            this.CheckItemSellInLowerThanElevenToBackStageConcert(item);
-            this.CheckItemSellInLowerThanSixForBackStageConcert(item);
-        }
-
-        item.SellIn -= 1;
-        if (item.SellIn < 0)
-        {
-            item.Quality -= item.Quality;
-        }
     }
 
     private void UpdateQualityForRegularItem(Item item)
