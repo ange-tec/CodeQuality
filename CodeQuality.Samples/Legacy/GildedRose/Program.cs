@@ -39,14 +39,13 @@ public class Program
         };
 
         var app = new GildedRose(items);
-
         for (var i = 0; i < days; i++)
         {
             sb.AppendLine("-------- day " + i + " --------");
             sb.AppendLine("name, sellIn, quality");
-            for (var j = 0; j < items.Count; j++)
+            foreach (var item in app.ListItems())
             {
-                sb.AppendLine(items[j].Name + ", " + items[j].SellIn + ", " + items[j].Quality);
+                sb.AppendLine(item.Name + ", " + item.SellIn + ", " + item.Quality);
             }
             sb.AppendLine("");
             app.UpdateQuality();

@@ -2,14 +2,21 @@ namespace CodeQuality.Samples.Legacy.GildedRose;
 
 /// <summary>
 /// </summary>
-public class GildedRose(IList<Item> items)
+public class GildedRose
 {
+    private readonly List<IItem> items;
+
+    /// <summary>
+    /// </summary>
+    public GildedRose(IList<Item> items) => this.items = items.Select(Item.Parse).ToList();
+
+    public IEnumerable<IItem> ListItems() => new List<IItem>(this.items);
+
     public void UpdateQuality()
     {
-        foreach (var item in items)
+        foreach (var item in this.items)
         {
-            var parsedItem = Item.Parse(item);
-            parsedItem.UpdateQuality();
+            item.UpdateQuality();
         }
     }
 }
