@@ -2,15 +2,32 @@ namespace CodeQuality.Samples.Legacy.GildedRose;
 
 public class Item
 {
+    protected const int MaxQuality = 50;
+    protected const int MinSellIn = 0;
     public string Name { get; set; }
-    public int SellIn { get; set; }
     public int Quality { get; set; }
-    
+    public int SellIn { get; set; }
+
+    public bool IsAgedBrie()
+    {
+        return this.Name == "Aged Brie";
+    }
+
+    public bool IsBackstagePass()
+    {
+        return this.Name == "Backstage passes to a TAFKAL80ETC concert";
+    }
+
+    public bool IsSulfura()
+    {
+        return this.Name == "Sulfuras, Hand of Ragnaros";
+    }
+
     public static IItem Parse(Item item)
     {
         if (item.IsAgedBrie())
         {
-            return new AgedBrie()
+            return new AgedBrie
             {
                 Quality = item.Quality,
                 Name = item.Name,
@@ -20,44 +37,31 @@ public class Item
 
         if (item.IsBackstagePass())
         {
-            return new BackstagePass()
+            return new BackstagePass
             {
                 Quality = item.Quality,
                 Name = item.Name,
                 SellIn = item.SellIn,
             };
         }
-        
-        if (item.Name == "Sulfura")
+
+        if (item.IsSulfura())
         {
-            return new Sulfura()
+            return new Sulfura
             {
                 Quality = item.Quality,
                 Name = item.Name,
                 SellIn = item.SellIn,
             };
         }
-        
 
-
-        throw new NotImplementedException();
+        return new RegularItem
+        {
+            Quality = item.Quality,
+            Name = item.Name,
+            SellIn = item.SellIn,
+        };
     }
-    
-    public bool IsBackstagePass()
-    {
-        return this.Name == "Backstage passes to a TAFKAL80ETC concert";
-    }
-    public bool IsAgedBrie()
-    {
-        return this.Name == "Aged Brie";
-    }
-    public bool IsSulfura()
-    {
-        return this.Name == "Sulfuras, Hand of Ragnaros";
-    }
-    
-    protected const int MaxQuality = 50;
-    protected const int MinSellIn = 0;
 
     public void UpdateAgedBrieQuality()
     {
@@ -72,21 +76,7 @@ public class Item
             this.Quality++;
         }
     }
-    private void CheckItemSellInLowerThanElevenToBackStageConcert()
-    {
-        if (this.SellIn < 11 && this.Quality < MaxQuality)
-        {
-            this.Quality++;
-        }
-    }
-    private void CheckItemSellInLowerThanSixForBackStageConcert()
-    {
-        if (this.SellIn < 6 && this.Quality < MaxQuality)
-        {
-            this.Quality++;
 
-        }
-    }
     public void UpdateQualityForBackstagePass()
     {
         if (this.Quality < MaxQuality)
@@ -100,6 +90,22 @@ public class Item
         if (this.SellIn < MinSellIn)
         {
             this.Quality -= this.Quality;
+        }
+    }
+
+    private void CheckItemSellInLowerThanElevenToBackStageConcert()
+    {
+        if (this.SellIn < 11 && this.Quality < MaxQuality)
+        {
+            this.Quality++;
+        }
+    }
+
+    private void CheckItemSellInLowerThanSixForBackStageConcert()
+    {
+        if (this.SellIn < 6 && this.Quality < MaxQuality)
+        {
+            this.Quality++;
         }
     }
 }
@@ -143,7 +149,7 @@ public class BackstagePass : Item, IItem
             this.Quality -= this.Quality;
         }
     }
-    
+
     private void CheckItemSellInLowerThanElevenToBackStageConcert()
     {
         if (this.SellIn < 11 && this.Quality < MaxQuality)
@@ -151,12 +157,12 @@ public class BackstagePass : Item, IItem
             this.Quality++;
         }
     }
+
     private void CheckItemSellInLowerThanSixForBackStageConcert()
     {
         if (this.SellIn < 6 && this.Quality < MaxQuality)
         {
             this.Quality++;
-
         }
     }
 }
@@ -165,6 +171,25 @@ public class Sulfura : Item, IItem
 {
     public void UpdateQuality()
     {
+    }
+}
+
+public class RegularItem : Item, IItem
+{
+    public void UpdateQuality()
+    {
+        if (this.Quality > 0)
+        {
+            this.Quality--;    
+        }
         
+        this.SellIn -= 1;
+        if (this.SellIn < MinSellIn)
+        {
+            if (this.Quality > 0)
+            {
+                this.Quality--;    
+            }
+        }
     }
 }
